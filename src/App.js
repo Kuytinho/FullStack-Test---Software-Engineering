@@ -1,10 +1,11 @@
 import React from 'react';
-import Chatbot from 'react-chatbot-kit';
+import Chat from './components/Chat';
+import './App.css'
 
 const App = () => {
   return (
     <div className="app">
-      <Chatbot />
+      <Chat />
     </div>
   );
 };
