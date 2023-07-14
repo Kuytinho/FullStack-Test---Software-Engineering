@@ -1,92 +1,139 @@
 /* Estilos gerais */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-  
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+/* Estilos do chat */
+.chat-container {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.message-container {
+  height: 300px;
+  overflow-y: scroll;
+  padding: 10px;
+}
+
+.message {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.user {
+  background-color: #f2f2f2;
+  text-align: right;
+}
+
+.bot {
+  background-color: #e2f5fe;
+  text-align: left;
+}
+
+.timestamp {
+  font-size: 12px;
+  color: gray;
+  margin-right: 5px
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+}
+
+.input-container input[type="text"] {
+  flex: 1;
+  width: 0;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.input-container button[type="submit"] {
+  padding: 8px 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.login-form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-form input {
+  width: 200%;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-form button {
+  padding: 8px 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.option-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.option-button {
+  cursor: pointer;
+  padding: 8px 12px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.option-button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Estilos responsivos */
+
+@media screen and (max-width: 600px) {
   .container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  h1 {
-    text-align: center;
-  }
-  
-  /* Estilos do chat */
-  .chat-container {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-  
-  .message-container {
-    height: 300px;
-    overflow-y: scroll;
     padding: 10px;
   }
-  
-  .message {
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 4px;
+
+  .input-container input[type="text"] {
+    width: 100%;
   }
-  
-  .user {
-    background-color: #f2f2f2;
-    text-align: right;
-  }
-  
-  .bot {
-    background-color: #e2f5fe;
-    text-align: left;
-  }
-  
-  .timestamp {
-    font-size: 12px;
-    color: #888;
-  }
-  
-  input[type="text"] {
-    width: 80%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  button[type="submit"] {
-    padding: 8px 16px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .login-form {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
+
   .login-form input {
-    width: 200px;
-    margin-bottom: 10px;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    width: 100%;
   }
-  
-  .login-form button {
-    padding: 8px 16px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+}
+
+@media screen and (max-width: 480px) {
+  .message-container {
+    height: 200px;
   }
-  
-  
+}

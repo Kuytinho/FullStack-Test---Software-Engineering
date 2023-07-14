@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
+import { CSVLink } from 'react-csv';
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -7,16 +8,18 @@ const Chat = () => {
   const [password, setPassword] = useState('');
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [startTime, setStartTime] = useState(null);
+  const [showExportLink, setShowExportLink] = useState(false);
 
   useEffect(() => {
     setStartTime(new Date());
   }, []);
 
   const handleInputChange = (e) => {
-    if (e.target.name === 'username') {
-      setUsername(e.target.value);
-    } else if (e.target.name === 'password') {
-      setPassword(e.target.value);
+    const { name, value } = e.target;
+    if (name === 'username') {
+      setUsername(value);
+    } else if (name === 'password') {
+      setPassword(value);
     }
   };
 
@@ -26,12 +29,15 @@ const Chat = () => {
     // Adicione sua lógica de autenticação aqui
     if (username === 'your_username' && password === 'your_password') {
       setLoggedIn(true);
-      setMessages([
-        ...messages,
-        { text: `Bem-vindo, ${username}! Como posso ajudar hoje?`, sender: 'bot', timestamp: new Date() }
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: `Welcome, ${username}! How can I help you today?`, sender: 'bot', timestamp: new Date() },
       ]);
     } else {
-      setMessages([...messages, { text: 'Usuário ou senha inválidos.', sender: 'bot', timestamp: new Date() }]);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: 'Login failed.', sender: 'bot', timestamp: new Date() },
+      ]);
     }
 
     // Limpe os campos de input
@@ -40,29 +46,15 @@ const Chat = () => {
   };
 
   const handleLoanOptions = () => {
-    handleNewMessage('Aqui estão as opções relacionadas a empréstimos:');
-    handleNewMessage('1. Você deseja solicitar um empréstimo?', 'loan-apply');
-    handleNewMessage('2. Condições do empréstimo', 'loan-conditions');
-    handleNewMessage('3. Ajuda', 'help');
+    handleNewMessage('Do you want to apply for a loan?', 'loan-apply', 'option-button');
+    handleNewMessage('Loan conditions', 'loan-conditions', 'option-button');
+    handleNewMessage('Help', 'help', 'option-button');
   };
 
-  const handleOptionClick = (option) => {
-    if (option === 'loan-apply') {
-      handleNewMessage('Para solicitar um empréstimo, visite nossa página de solicitação de empréstimo:', 'bot');
-      handleNewMessage('Solicitar Empréstimo', 'bot', 'https://exemplo.com/solicitar-emprestimo');
-    } else if (option === 'loan-conditions') {
-      handleNewMessage('Você pode encontrar as condições e termos do empréstimo em nosso site:', 'bot');
-      handleNewMessage('Condições do Empréstimo', 'bot', 'https://exemplo.com/condicoes-emprestimo');
-    } else if (option === 'help') {
-      handleNewMessage('Se você precisar de ajuda relacionada a empréstimos, entre em contato com nossa equipe de suporte:', 'bot');
-      handleNewMessage('Contato de Suporte', 'bot', 'https://exemplo.com/contato-suporte');
-    }
-  };
-
-  const handleNewMessage = (text, sender = 'bot', link = '') => {
+  const handleNewMessage = (text, link, sender = 'bot', className = '') => {
     setMessages((prevMessages) => [
       ...prevMessages,
-      { text, sender, timestamp: new Date(), link },
+      { text, sender, timestamp: new Date(), link, className },
     ]);
   };
 
@@ -79,46 +71,89 @@ const Chat = () => {
     // Lide com diferentes mensagens do usuário aqui
     if (!isLoggedIn) {
       handleFormSubmit(e); // Autentique o usuário
-    } else if (userMessage.toLowerCase().includes('olá')) {
-      const startTimeMessage = startTime
-        ? `Você iniciou a conversa às ${format(startTime, 'HH:mm')}.`
-        : '';
-      handleNewMessage(`Olá! Como posso ajudar? ${startTimeMessage}`);
-    } else if (userMessage.toLowerCase().includes('tchau')) {
-      handleNewMessage('Tchau! Tenha um ótimo dia!');
+    } else if (userMessage.toLowerCase().includes('hello')) {
+      handleNewMessage('Hello! How can I help you today?');
+    } else if (userMessage.toLowerCase().includes('goodbye')) {
+      handleNewMessage('Goodbye! Have a nice day!');
       setLoggedIn(false); // Redefina o status de login
-    } else if (userMessage.toLowerCase().includes('bom')) {
-      handleNewMessage('Fico feliz em saber! Como posso ajudar hoje?');
-    } else if (userMessage.toLowerCase().includes('quero')) {
-      handleNewMessage('O que você deseja?');
-    } else if (userMessage.toLowerCase().includes('empréstimo')) {
+      setShowExportLink(true) // Mostra o link de exportação CSV
+    } else if (userMessage.toLowerCase().includes('good')) {
+      handleNewMessage('I\'m glad to hear that! What else can I do for you today?');
+    } else if (userMessage.toLowerCase().includes('i want')) {
+      handleNewMessage('What do you want?');
+    } else if (userMessage.toLowerCase().includes('loan')) {
       handleLoanOptions();
     } else {
-      handleNewMessage('Desculpe, mas não entendi. Como posso ajudar?');
+      handleNewMessage('Sorry, I did not understand. Can you please repeat?');
     }
 
     // Limpe o campo de input
     e.target.elements.message.value = '';
   };
 
-  const handleOptionMessageClick = (option, link) => {
-    if (link) {
-      window.open(link, '_blank');
-    } else if (option) {
-      handleOptionClick(option);
+  const handleOptionMessageClick = (option, link, className) => {
+    if (option === 'Do you want to apply for a loan?') {
+      handleNewMessage('Apply for a loan', link, 'user');
+      handleNewMessage('Please click the link below to continue your application:', '', 'bot');
+      handleNewMessage(
+        <a href="https://lexartlabs.com/for-companies/" target="_blank" rel="noopener noreferrer" className={className}>
+          Apply for a loan
+        </a>,
+        '',
+        'bot'
+      );
+    } else if (option === 'Loan conditions') {
+      handleNewMessage('Loan conditions', link, 'user');
+      handleNewMessage(
+        'Short term loans are called such because of how quickly the loan needs to be paid off. ' +
+        'In most cases, it must be paid off within six months to a year – at most, 18 months. ' +
+        'Any longer loan term than that is considered a medium term or long term loan.',
+        '',
+        'bot'
+      );
+      handleNewMessage('You can learn more about it by clicking the link below:', '', 'bot');
+      handleNewMessage(
+        <a href="https://lexartlabs.com/for-companies/" target="_blank" rel="noopener noreferrer" className={className}>
+          Loan Conditions
+        </a>,
+        '',
+        'bot'
+      );
+    } else if (option === 'Help') {
+      handleNewMessage('Help', link, 'user');
+      handleNewMessage('For assistance with our services, please click the link below:', '', 'bot');
+      handleNewMessage(
+        <a href="https://lexartlabs.com/for-companies/" target="_blank" rel="noopener noreferrer" className={className}>
+          Help
+        </a>,
+        '',
+        'bot'
+      );
     }
   };
 
   return (
     <div>
       <h1 className="title">Chatbot</h1>
+      {showExportLink && (
+        <CSVLink
+          data={messages.map((message) => ({
+            Text: message.text,
+            Sender: message.sender,
+            Timestamp: format(message.timestamp, 'yyyy-MM-dd HH:mm:ss'),
+          }))}
+          filename={'conversation.csv'}
+        >
+          Export Conversation to CSV
+        </CSVLink>
+      )}
       <div className="chat-container">
         <div className="message-container">
           {messages.map((message, index) => (
             <div
               key={index}
-              className={`message ${message.sender}`}
-              onClick={() => handleOptionMessageClick(message.option, message.link)}
+              className={`message ${message.sender} ${message.className}`}
+              onClick={() => handleOptionMessageClick(message.text, message.link, message.className)}
             >
               <span className="timestamp">
                 {message.timestamp && format(message.timestamp, 'HH:mm')}
