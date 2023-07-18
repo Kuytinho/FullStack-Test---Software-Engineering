@@ -1,35 +1,42 @@
----
-title: Create React App
-description: A default Create React App project, utilizing `serve` to serve the built app
-tags:
-  - node
-  - react
----
+# Chatbot Application
 
-# Create React App
+Este é um exemplo de aplicação de chatbot desenvolvida usando React.
 
-This is a [Create React App](https://create-react-app.dev/) starter that uses [serve](https://www.npmjs.com/package/serve).
+## Deploy
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/6sjhSn?referralCode=ySCnWl)
+https://lucasfullstacktest.up.railway.app/
 
-## ✨ Features
+## Descrição
 
-- Create React App
-- Serve
+A aplicação de chatbot é um assistente virtual que interage com os usuários, fornecendo respostas automáticas a perguntas comuns. Ele possui recursos de autenticação de usuário, opções de empréstimo e exportação de conversas em formato CSV.
 
-## 💁‍♀️ How to use
+## Funcionalidades
 
-- Install required dependencies with `npm install`
-- Start the server for development `npm run dev`
+- Autenticação de usuário: os usuários podem fazer login fornecendo um nome de usuário e senha válidos. Como é um exemplo de aplicação, para fazer o login o username é 'your_username' e a senha é 'your_password'
+- Respostas automáticas: o chatbot fornece respostas automáticas com base nas mensagens dos usuários.
+- Opções de empréstimo: os usuários podem selecionar opções de empréstimo predefinidas.
+- Exportação de conversas: as conversas podem ser exportadas para um arquivo CSV. O código que simula como seria salvar as conversas no banco de dados está comentado no componente Chat.jsx, entre as linhas 22 e 41.
 
-    (The original `start` command has been more appropriately renamed to `dev`)
+## Instalação
 
-## ❓ Why use `serve`
+1. Clone este repositório em sua máquina local.
+2. Navegue até o diretório raiz do projeto.
+3. Execute o npm install para instalar as dependências.
+4. Após a conclusão da instalação, execute o o comndo npm run dev para inicia o server de desenvolvimento.
+5. Acesse a aplicação em seu navegador no endereço `http://localhost:3000`.
 
-By default Railway will use the `start` script defined in package.json to run your app, the problem with that for a default create-react-app project is that the start script starts a development server
-not fit to run on railway, for reasons such as:
+## Tecnologias Utilizadas
 
- - Starts a file watching development server that's resource intensive
- - Has a tendency for ram to get out of hand (>600mb)
- - Doesn't listen on the railway provided PORT variable
- - Not as stable or performant as `serve`
+- React
+- JavaScript
+- HTML
+- CSS
+
+## Autor
+
+Lucas Carvalho de Medeiros
+
+## Licença
+
+Este projeto está licenciado sob a [MIT License](LICENSE).
+
