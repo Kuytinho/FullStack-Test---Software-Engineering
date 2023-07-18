@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { format } from 'date-fns';
 import { CSVLink } from 'react-csv';
 
@@ -7,12 +7,8 @@ const Chat = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoggedIn, setLoggedIn] = useState(false);
-  const [startTime, setStartTime] = useState(null);
   const [showExportLink, setShowExportLink] = useState(false);
-
-  useEffect(() => {
-    setStartTime(new Date());
-  }, []);
+  const messageContainerRef = useRef(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -22,6 +18,27 @@ const Chat = () => {
       setPassword(value);
     }
   };
+
+  // const storeConversation = (conversation) => {
+
+  //   fetch('https://api.example.com/conversations', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(conversation),
+  //   })
+  //     .then((response) => {
+  //       if (response.ok) {
+  //         console.log('Conversa armazenada com sucesso no banco de dados!');
+  //       } else {
+  //         console.error('Erro ao armazenar a conversa no banco de dados.');
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error('Erro ao enviar a conversa para o servidor:', error);
+  //     });
+  // };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -46,6 +63,7 @@ const Chat = () => {
   };
 
   const handleLoanOptions = () => {
+    handleNewMessage('Please click at one of the option bellow:')
     handleNewMessage('Do you want to apply for a loan?', 'loan-apply', 'option-button');
     handleNewMessage('Loan conditions', 'loan-conditions', 'option-button');
     handleNewMessage('Help', 'help', 'option-button');
@@ -76,7 +94,7 @@ const Chat = () => {
     } else if (userMessage.toLowerCase().includes('goodbye')) {
       handleNewMessage('Goodbye! Have a nice day!');
       setLoggedIn(false); // Redefina o status de login
-      setShowExportLink(true) // Mostra o link de exportação CSV
+      setShowExportLink(true); // Mostra o link de exportação CSV
     } else if (userMessage.toLowerCase().includes('good')) {
       handleNewMessage('I\'m glad to hear that! What else can I do for you today?');
     } else if (userMessage.toLowerCase().includes('i want')) {
@@ -132,9 +150,17 @@ const Chat = () => {
     }
   };
 
+  useEffect(() => {
+    if (messageContainerRef.current) {
+      messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   return (
     <div>
       <h1 className="title">Chatbot</h1>
+      {isLoggedIn && ( // Adicione a verificação de isLoggedIn aqui
+        <>
       {showExportLink && (
         <CSVLink
           data={messages.map((message) => ({
@@ -148,7 +174,7 @@ const Chat = () => {
         </CSVLink>
       )}
       <div className="chat-container">
-        <div className="message-container">
+        <div className="message-container" ref={messageContainerRef}>
           {messages.map((message, index) => (
             <div
               key={index}
@@ -167,6 +193,8 @@ const Chat = () => {
           <button type="submit">Enviar</button>
         </form>
       </div>
+      </>
+      )}
       {!isLoggedIn && (
         <form className="login-form" onSubmit={handleFormSubmit}>
           <input
