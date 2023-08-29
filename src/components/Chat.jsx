@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { format } from 'date-fns';
 import { CSVLink } from 'react-csv';
+import Header from './Header';
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
@@ -40,26 +41,40 @@ const Chat = () => {
   //     });
   // };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-
-    // Adicione sua lógica de autenticação aqui
-    if (username === 'your_username' && password === 'your_password') {
-      setLoggedIn(true);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: `Welcome, ${username}! How can I help you today?`, sender: 'bot', timestamp: new Date() },
-      ]);
-    } else {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: 'Login failed.', sender: 'bot', timestamp: new Date() },
-      ]);
+  
+    try {
+      const response = await fetch('https://kuytinhochatapi.up.railway.app/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }), // Enviar os dados de login para o servidor
+      });
+  
+      if (response.ok) {
+        // Login bem-sucedido no servidor
+        // const data = await response.json();
+        setLoggedIn(true);
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { text: `Welcome, ${username}! How can I help you today?`, sender: 'bot', timestamp: new Date() },
+        ]);
+      } else {
+        // Login falhou no servidor
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { text: 'Login failed.', sender: 'bot', timestamp: new Date() },
+        ]);
+      }
+  
+      // Limpe os campos de input
+      setUsername('');
+      setPassword('');
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
     }
-
-    // Limpe os campos de input
-    setUsername('');
-    setPassword('');
   };
 
   const handleLoanOptions = () => {
@@ -158,7 +173,8 @@ const Chat = () => {
 
   return (
     <div>
-      <h1 className="title">Chatbot</h1>
+      {/* <h1 className="title">Chatbot</h1> */}
+      <Header />
       {isLoggedIn && ( // Adicione a verificação de isLoggedIn aqui
         <>
       {showExportLink && (

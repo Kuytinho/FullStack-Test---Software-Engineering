@@ -66,7 +66,7 @@ h1 {
 
 .input-container button[type="submit"] {
   padding: 8px 16px;
-  background-color: #4caf50;
+  background-color: black;
   color: white;
   border: none;
   border-radius: 4px;
@@ -91,7 +91,7 @@ h1 {
 
 .login-form button {
   padding: 8px 16px;
-  background-color: #4caf50;
+  background-color: black;
   color: white;
   border: none;
   border-radius: 4px;
@@ -114,6 +114,18 @@ h1 {
 
 .option-button:hover {
   background-color: #e0e0e0;
+}
+
+.header {
+  background-color: black; /* Define o background azul */
+  padding: 10px; /* Adicione algum espaçamento interno para melhor aparência */
+  display: flex; /* Use flexbox para alinhar conteúdo verticalmente */
+  align-items: center; /* Alinhe verticalmente o conteúdo ao centro */
+}
+
+.header img {
+  margin-left: 3%; /* Adicione margem à direita da imagem para espaço */
+  width: 20%
 }
 
 /* Estilos responsivos */
