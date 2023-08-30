@@ -12,10 +12,11 @@ A aplicação de chatbot é um assistente virtual que interage com os usuários,
 
 ## Funcionalidades
 
-- Autenticação de usuário: os usuários podem fazer login fornecendo um nome de usuário e senha válidos. Como é um exemplo de aplicação, para fazer o login o username é 'your_username' e a senha é 'your_password'
+- Autenticação de usuário: os usuários podem fazer login fornecendo um nome de usuário e senha válidos. Nome: username  Senha: password
 - Respostas automáticas: o chatbot fornece respostas automáticas com base nas mensagens dos usuários.
 - Opções de empréstimo: os usuários podem selecionar opções de empréstimo predefinidas.
-- Exportação de conversas: as conversas podem ser exportadas para um arquivo CSV. O código que simula como seria salvar as conversas no banco de dados está comentado no componente Chat.jsx, entre as linhas 22 e 41.
+- Backup da conversa: as conversas são salvas no banco de dados.
+- Exportação de conversas: as conversas podem ser exportadas para um arquivo CSV.
 
 ## Instalação
 
@@ -36,7 +37,4 @@ A aplicação de chatbot é um assistente virtual que interage com os usuários,
 
 Lucas Carvalho de Medeiros
 
-## Licença
-
-Este projeto está licenciado sob a [MIT License](LICENSE).
 
