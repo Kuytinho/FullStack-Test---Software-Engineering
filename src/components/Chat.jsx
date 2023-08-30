@@ -50,26 +50,21 @@ const Chat = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }), // Enviar os dados de login para o servidor
+        body: JSON.stringify({ username, password }), 
       });
   
       if (response.ok) {
-        // Login bem-sucedido no servidor
-        // const data = await response.json();
         setLoggedIn(true);
         setMessages((prevMessages) => [
           ...prevMessages,
           { text: `Welcome, ${username}! How can I help you today?`, sender: 'bot', timestamp: new Date() },
         ]);
       } else {
-        // Login falhou no servidor
         setMessages((prevMessages) => [
           ...prevMessages,
           { text: 'Login failed.', sender: 'bot', timestamp: new Date() },
         ]);
       }
-  
-      // Limpe os campos de input
       setUsername('');
       setPassword('');
     } catch (error) {
@@ -95,21 +90,19 @@ const Chat = () => {
     e.preventDefault();
     const userMessage = e.target.elements.message.value;
   
-    // Exiba a mensagem do usuário na interface do chat
     setMessages((prevMessages) => [
       ...prevMessages,
       { text: userMessage, sender: 'user', timestamp: new Date() },
     ]);
   
-    // Lide com diferentes mensagens do usuário aqui
     if (!isLoggedIn) {
-      handleFormSubmit(e); // Autentique o usuário
+      handleFormSubmit(e); 
     } else if (userMessage.toLowerCase().includes('hello')) {
       handleNewMessage('Hello! How can I help you today?');
     } else if (userMessage.toLowerCase().includes('goodbye')) {
       handleNewMessage('Goodbye! Have a nice day!');
-      setLoggedIn(false); // Redefina o status de login
-      setShowExportLink(true); // Mostra o link de exportação CSV
+      setLoggedIn(false); 
+      setShowExportLink(true); 
     } else if (userMessage.toLowerCase().includes('good')) {
       handleNewMessage('I\'m glad to hear that! What else can I do for you today?');
     } else if (userMessage.toLowerCase().includes('i want')) {
@@ -119,11 +112,7 @@ const Chat = () => {
     } else {
       handleNewMessage('Sorry, I did not understand. Can you please repeat?');
     }
-  
-    // Limpe o campo de input
     e.target.elements.message.value = '';
-  
-    // Armazene a conversa
     storeConversation({ text: userMessage, sender: 'user', timestamp: new Date() });
   };
   
@@ -177,9 +166,8 @@ const Chat = () => {
 
   return (
     <div>
-      {/* <h1 className="title">Chatbot</h1> */}
       <Header />
-      {isLoggedIn && ( // Adicione a verificação de isLoggedIn aqui
+      {isLoggedIn && (
         <>
       {showExportLink && (
         <CSVLink
