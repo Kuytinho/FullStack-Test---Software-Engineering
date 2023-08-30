@@ -20,32 +20,32 @@ const Chat = () => {
     }
   };
 
-  // const storeConversation = (conversation) => {
-
-  //   fetch('https://api.example.com/conversations', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(conversation),
-  //   })
-  //     .then((response) => {
-  //       if (response.ok) {
-  //         console.log('Conversa armazenada com sucesso no banco de dados!');
-  //       } else {
-  //         console.error('Erro ao armazenar a conversa no banco de dados.');
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error('Erro ao enviar a conversa para o servidor:', error);
-  //     });
-  // };
+  const storeConversation = (conversation) => {
+    fetch('https://kuytinhochatapi.up.railway.app/api/conversations', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(conversation),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log('Conversa armazenada com sucesso no banco de dados!');
+        } else {
+          console.error('Erro ao armazenar a conversa no banco de dados.');
+        }
+      })
+      .catch((error) => {
+        console.error('Erro ao enviar a conversa para o servidor:', error);
+      });
+  };
+  
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
   
     try {
-      const response = await fetch('https://kuytinhochatapi.up.railway.app/login', {
+      const response = await fetch('https://kuytinhochatapi.up.railway.app/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -94,13 +94,13 @@ const Chat = () => {
   const handleUserMessage = (e) => {
     e.preventDefault();
     const userMessage = e.target.elements.message.value;
-
+  
     // Exiba a mensagem do usuário na interface do chat
     setMessages((prevMessages) => [
       ...prevMessages,
       { text: userMessage, sender: 'user', timestamp: new Date() },
     ]);
-
+  
     // Lide com diferentes mensagens do usuário aqui
     if (!isLoggedIn) {
       handleFormSubmit(e); // Autentique o usuário
@@ -119,10 +119,14 @@ const Chat = () => {
     } else {
       handleNewMessage('Sorry, I did not understand. Can you please repeat?');
     }
-
+  
     // Limpe o campo de input
     e.target.elements.message.value = '';
+  
+    // Armazene a conversa
+    storeConversation({ text: userMessage, sender: 'user', timestamp: new Date() });
   };
+  
 
   const handleOptionMessageClick = (option, link, className) => {
     if (option === 'Do you want to apply for a loan?') {
